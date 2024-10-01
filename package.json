@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "tsc && node ./build/app.js"
+    "start": "npx prisma generate && npx tsc && node ./build/app.js"
   },
   "author": "",
   "license": "ISC",

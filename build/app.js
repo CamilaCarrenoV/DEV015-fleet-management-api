@@ -17,11 +17,19 @@ const client_1 = require("@prisma/client");
 const app = (0, express_1.default)();
 const prisma = new client_1.PrismaClient();
 const PORT = 3001;
-app.use('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const taxis = yield prisma.taxis.findMany();
+app.get('/taxis', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { plate, page = 1, limit = 10 } = req.query;
+    const pageInt = parseInt(page); // Convertir a número para paginación
+    const limitInt = parseInt(limit);
+    const where = plate ? { plate: { contains: plate } } : {};
+    const taxis = yield prisma.taxis.findMany({
+        where,
+        skip: (pageInt - 1) * limitInt, // Saltar los registros según la página
+        take: limitInt // Limitar el número de registros
+    });
     res.json(taxis);
 }));
 app.listen(PORT, () => {
     console.log('SERVER IS UP ON PORT:', PORT);
 });
-
+//aquí configuro la appi

@@ -14,9 +14,8 @@ datasource db {
 }
 
 model taxis {
-  id          Int           @id @default(autoincrement())
+  id          Int           @id
   plate       String        @unique
-  trajectories trajectories[]
 }
 
 model trajectories {
@@ -26,5 +25,4 @@ model trajectories {
   latitude  Float
   longitude Float
 
-  taxi      taxis    @relation(fields: [taxi_id], references: [id], onDelete: Cascade)
 }
