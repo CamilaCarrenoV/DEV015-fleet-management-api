@@ -16,12 +16,15 @@ const express_1 = __importDefault(require("express"));
 const client_1 = require("@prisma/client");
 const app = (0, express_1.default)();
 const prisma = new client_1.PrismaClient();
-const PORT = 3001;
+const PORT = 3000;
 app.get('/taxis', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { plate, page = 1, limit = 10 } = req.query;
     const pageInt = parseInt(page); // Convertir a número para paginación
     const limitInt = parseInt(limit);
-    const where = plate ? { plate: { contains: plate } } : {};
+    if (isNaN(pageInt) || isNaN(limitInt) || pageInt < 1 || limitInt < 1) {
+        return res.status(400).json({ error: "page or limit is not valid" });
+    }
+    const where = plate ? { plate: { equals: plate } } : {};
     const taxis = yield prisma.taxis.findMany({
         where,
         skip: (pageInt - 1) * limitInt, // Saltar los registros según la página
@@ -32,4 +35,6 @@ app.get('/taxis', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 app.listen(PORT, () => {
     console.log('SERVER IS UP ON PORT:', PORT);
 });
-//aquí configuro la appi
+/*app.get('trajectories', async(req: , res:) => {
+    const
+})*/ 
