@@ -14,7 +14,7 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getTaxis = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { plate, page = 1, limit = 10 } = req.query;
-    const pageInt = parseInt(page); // Convertir a número para paginación
+    const pageInt = parseInt(page);
     const limitInt = parseInt(limit);
     if (isNaN(pageInt) || isNaN(limitInt) || pageInt < 1 || limitInt < 1) {
         return res.status(400).json({ error: "page or limit is not valid" });
@@ -22,8 +22,8 @@ const getTaxis = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const where = plate ? { plate: { equals: plate } } : {};
     const taxis = yield prisma.taxis.findMany({
         where,
-        skip: (pageInt - 1) * limitInt, // Saltar los registros según la página
-        take: limitInt // Limitar el número de registros
+        skip: (pageInt - 1) * limitInt,
+        take: limitInt
     });
     res.json(taxis);
 });

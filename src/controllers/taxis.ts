@@ -6,7 +6,7 @@ export const getTaxis = async(req:Request , res:Response ) => {
 
     const { plate, page = 1, limit = 10 } = req.query as any;
   
-    const pageInt = parseInt(page);  // Convertir a número para paginación
+    const pageInt = parseInt(page); 
     const limitInt = parseInt(limit);
   
     if (isNaN(pageInt) || isNaN(limitInt) || pageInt < 1 || limitInt < 1) {
@@ -18,8 +18,8 @@ export const getTaxis = async(req:Request , res:Response ) => {
   
     const taxis = await prisma.taxis.findMany({
       where,
-      skip: (pageInt - 1) * limitInt,  // Saltar los registros según la página
-      take: limitInt                   // Limitar el número de registros
+      skip: (pageInt - 1) * limitInt,  
+      take: limitInt                   
   });
   
       res.json(taxis);
